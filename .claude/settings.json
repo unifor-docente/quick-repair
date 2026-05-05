@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p /media/arimateia-junior/Dados/projetos/quick-repair/docs/superpowers/plans && ls /media/arimateia-junior/Dados/projetos/quick-repair/)",
+      "Bash(gh auth *)",
+      "Bash(git --version)",
+      "Bash(gh --version)"
+    ],
+    "additionalDirectories": [
+      "/media/arimateia-junior/Dados/projetos/quick-repair/docs/superpowers"
+    ]
+  }
+}

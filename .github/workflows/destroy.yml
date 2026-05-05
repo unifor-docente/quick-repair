@@ -1,0 +1,124 @@
+name: Destroy Azure
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Digite "destroy" para destruir os recursos Azure'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+env:
+  TF_WORKING_DIR: ./infrastructure
+  TF_STATE_RESOURCE_GROUP: rg-quickrepair-tfstate
+  TF_STATE_CONTAINER: tfstate
+  TF_STATE_KEY: quickrepair.tfstate
+
+jobs:
+  destroy:
+    name: Destroy Infrastructure
+    runs-on: ubuntu-latest
+    if: github.event.inputs.confirm == 'destroy'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          creds: |
+            {
+              "clientId": "${{ secrets.ARM_CLIENT_ID }}",
+              "clientSecret": "${{ secrets.ARM_CLIENT_SECRET }}",
+              "subscriptionId": "${{ secrets.ARM_SUBSCRIPTION_ID }}",
+              "tenantId": "${{ secrets.ARM_TENANT_ID }}"
+            }
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.7.5"
+
+      - name: Prepare Terraform remote state
+        id: state
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        env:
+          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+        run: |
+          set -euo pipefail
+
+          suffix="$(printf "%s" "${ARM_SUBSCRIPTION_ID}-${GITHUB_REPOSITORY}" | sha256sum | cut -c1-12)"
+          storage_account_name="stqr${suffix}"
+
+          if ! az group show --name "$TF_STATE_RESOURCE_GROUP" --only-show-errors >/dev/null 2>&1; then
+            echo "State resource group nao existe. Nada para destruir."
+            echo "has_state=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if ! az storage account show \
+            --name "$storage_account_name" \
+            --resource-group "$TF_STATE_RESOURCE_GROUP" \
+            --only-show-errors >/dev/null 2>&1; then
+            echo "State storage account nao existe. Nada para destruir."
+            echo "has_state=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          account_key="$(az storage account keys list \
+            --account-name "$storage_account_name" \
+            --resource-group "$TF_STATE_RESOURCE_GROUP" \
+            --query '[0].value' \
+            --output tsv)"
+
+          echo "::add-mask::$account_key"
+
+          cat > backend.hcl <<EOF
+          resource_group_name  = "$TF_STATE_RESOURCE_GROUP"
+          storage_account_name = "$storage_account_name"
+          container_name       = "$TF_STATE_CONTAINER"
+          key                  = "$TF_STATE_KEY"
+          access_key           = "$account_key"
+          EOF
+
+          echo "has_state=true" >> "$GITHUB_OUTPUT"
+
+      - name: Terraform Init
+        if: steps.state.outputs.has_state == 'true'
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        env:
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+        run: terraform init -backend-config=backend.hcl -reconfigure
+
+      - name: Terraform Destroy
+        if: steps.state.outputs.has_state == 'true'
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        env:
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+        run: terraform destroy -auto-approve -input=false
+
+      - name: Remove Terraform state storage
+        if: steps.state.outputs.has_state == 'true'
+        run: |
+          az group delete \
+            --name "$TF_STATE_RESOURCE_GROUP" \
+            --yes \
+            --no-wait \
+            --only-show-errors
+
+      - name: Destroy summary
+        run: |
+          cat <<EOF >> "$GITHUB_STEP_SUMMARY"
+          ## Destroy solicitado
+
+          Recursos gerenciados pelo Terraform foram destruidos quando havia state remoto.
+          O resource group do Terraform state tambem foi removido para evitar custo residual.
+          EOF

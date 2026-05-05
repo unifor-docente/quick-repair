@@ -16,9 +16,8 @@
 quick-repair/
 ├── .github/
 │   └── workflows/
-│       ├── terraform-plan.yml        # Roda em PRs automaticamente
-│       ├── terraform-apply.yml       # Dispatch manual
-│       └── terraform-destroy.yml    # Dispatch manual
+│       ├── deploy.yml                # Dispatch manual: provisiona e publica
+│       └── destroy.yml               # Dispatch manual: remove recursos e state
 ├── frontend/
 │   ├── public/
 │   ├── src/
@@ -83,7 +82,7 @@ quick-repair/
 - Create: `backend/package.json`
 - Create: `backend/tsconfig.json`
 
-- [ ] **Step 1.1: Criar `.gitignore`**
+- [x] **Step 1.1: Criar `.gitignore`**
 
 ```gitignore
 # Node
@@ -116,7 +115,7 @@ backend/local.settings.json
 Thumbs.db
 ```
 
-- [ ] **Step 1.2: Criar `backend/host.json`**
+- [x] **Step 1.2: Criar `backend/host.json`**
 
 ```json
 {
@@ -136,7 +135,7 @@ Thumbs.db
 }
 ```
 
-- [ ] **Step 1.3: Criar `backend/local.settings.json.example`**
+- [x] **Step 1.3: Criar `backend/local.settings.json.example`**
 
 ```json
 {
@@ -155,7 +154,7 @@ Thumbs.db
 }
 ```
 
-- [ ] **Step 1.4: Criar `backend/tsconfig.json`**
+- [x] **Step 1.4: Criar `backend/tsconfig.json`**
 
 ```json
 {
@@ -175,7 +174,7 @@ Thumbs.db
 }
 ```
 
-- [ ] **Step 1.5: Criar `backend/package.json`**
+- [x] **Step 1.5: Criar `backend/package.json`**
 
 ```json
 {
@@ -217,7 +216,7 @@ Thumbs.db
 }
 ```
 
-- [ ] **Step 1.6: Instalar dependências do backend**
+- [x] **Step 1.6: Instalar dependências do backend**
 
 ```bash
 cd backend && npm install
@@ -240,7 +239,7 @@ git commit -m "chore: scaffold backend project structure"
 **Files:**
 - Create: `backend/src/types/index.ts`
 
-- [ ] **Step 2.1: Criar `backend/src/types/index.ts`**
+- [x] **Step 2.1: Criar `backend/src/types/index.ts`**
 
 ```typescript
 export type ProblemType = 'hidrossanitario' | 'eletrico' | 'estrutural' | 'acabamento' | 'outro';
@@ -329,7 +328,7 @@ git commit -m "feat: add TypeScript domain types"
 **Files:**
 - Create: `backend/src/services/tableStorage.ts`
 
-- [ ] **Step 3.1: Criar `backend/src/services/tableStorage.ts`**
+- [x] **Step 3.1: Criar `backend/src/services/tableStorage.ts`**
 
 ```typescript
 import { TableClient, TableServiceClient, AzureNamedKeyCredential, odata } from '@azure/data-tables';
@@ -456,7 +455,7 @@ git commit -m "feat: add Azure Table Storage service"
 **Files:**
 - Create: `backend/src/services/blobStorage.ts`
 
-- [ ] **Step 4.1: Criar `backend/src/services/blobStorage.ts`**
+- [x] **Step 4.1: Criar `backend/src/services/blobStorage.ts`**
 
 ```typescript
 import {
@@ -535,7 +534,7 @@ git commit -m "feat: add Blob Storage SAS URL service"
 **Files:**
 - Create: `backend/src/services/emailService.ts`
 
-- [ ] **Step 5.1: Criar `backend/src/services/emailService.ts`**
+- [x] **Step 5.1: Criar `backend/src/services/emailService.ts`**
 
 ```typescript
 import { EmailClient, KnownEmailSendStatus } from '@azure/communication-email';
@@ -651,7 +650,7 @@ git commit -m "feat: add SendGrid email service"
 **Files:**
 - Create: `backend/src/functions/createTicket.ts`
 
-- [ ] **Step 6.1: Criar `backend/src/functions/createTicket.ts`**
+- [x] **Step 6.1: Criar `backend/src/functions/createTicket.ts`**
 
 ```typescript
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from '@azure/functions';
@@ -795,7 +794,7 @@ git commit -m "feat: implement POST /tickets with warranty check"
 **Files:**
 - Create: `backend/src/functions/getTicket.ts`
 
-- [ ] **Step 7.1: Criar `backend/src/functions/getTicket.ts`**
+- [x] **Step 7.1: Criar `backend/src/functions/getTicket.ts`**
 
 ```typescript
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from '@azure/functions';
@@ -845,7 +844,7 @@ git commit -m "feat: implement GET /tickets/{ticketId}"
 **Files:**
 - Create: `backend/src/functions/getSasUrl.ts`
 
-- [ ] **Step 8.1: Criar `backend/src/functions/getSasUrl.ts`**
+- [x] **Step 8.1: Criar `backend/src/functions/getSasUrl.ts`**
 
 ```typescript
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from '@azure/functions';
@@ -901,7 +900,7 @@ git commit -m "feat: implement POST /tickets/{ticketId}/photos/sas"
 **Files:**
 - Create: `backend/src/functions/technicianComplete.ts`
 
-- [ ] **Step 9.1: Criar `backend/src/functions/technicianComplete.ts`**
+- [x] **Step 9.1: Criar `backend/src/functions/technicianComplete.ts`**
 
 ```typescript
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from '@azure/functions';
@@ -961,7 +960,7 @@ git commit -m "feat: implement POST /tickets/{ticketId}/technician/complete"
 **Files:**
 - Create: `backend/src/functions/clientValidate.ts`
 
-- [ ] **Step 10.1: Criar `backend/src/functions/clientValidate.ts`**
+- [x] **Step 10.1: Criar `backend/src/functions/clientValidate.ts`**
 
 ```typescript
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from '@azure/functions';
@@ -1027,7 +1026,7 @@ git commit -m "feat: implement POST /tickets/{ticketId}/client/validate"
 **Files:**
 - Create: `backend/src/functions/autoClose.ts`
 
-- [ ] **Step 11.1: Criar `backend/src/functions/autoClose.ts`**
+- [x] **Step 11.1: Criar `backend/src/functions/autoClose.ts`**
 
 ```typescript
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from '@azure/functions';
@@ -1094,7 +1093,7 @@ git commit -m "feat: implement POST /tickets/{ticketId}/auto-close"
 **Files:**
 - Create: `backend/src/functions/timerAutoClose.ts`
 
-- [ ] **Step 12.1: Criar `backend/src/functions/timerAutoClose.ts`**
+- [x] **Step 12.1: Criar `backend/src/functions/timerAutoClose.ts`**
 
 ```typescript
 import { app, Timer, InvocationContext } from '@azure/functions';
@@ -1162,7 +1161,7 @@ git commit -m "feat: add timer trigger for 72h auto-close"
 **Files:**
 - Create: `backend/seed/seed.ts`
 
-- [ ] **Step 13.1: Criar `backend/seed/seed.ts`**
+- [x] **Step 13.1: Criar `backend/seed/seed.ts`**
 
 ```typescript
 import { TableClient, TableServiceClient, AzureNamedKeyCredential } from '@azure/data-tables';
@@ -1349,7 +1348,7 @@ git commit -m "feat: add database seed for contracts and technicians"
 - Create: `frontend/src/App.tsx`
 - Create: `frontend/src/main.tsx`
 
-- [ ] **Step 14.1: Criar `frontend/package.json`**
+- [x] **Step 14.1: Criar `frontend/package.json`**
 
 ```json
 {
@@ -1379,7 +1378,7 @@ git commit -m "feat: add database seed for contracts and technicians"
 }
 ```
 
-- [ ] **Step 14.2: Criar `frontend/vite.config.ts`**
+- [x] **Step 14.2: Criar `frontend/vite.config.ts`**
 
 ```typescript
 import { defineConfig } from 'vite';
@@ -1399,7 +1398,7 @@ export default defineConfig({
 });
 ```
 
-- [ ] **Step 14.3: Criar `frontend/tsconfig.json`**
+- [x] **Step 14.3: Criar `frontend/tsconfig.json`**
 
 ```json
 {
@@ -1417,7 +1416,7 @@ export default defineConfig({
 }
 ```
 
-- [ ] **Step 14.4: Criar `frontend/index.html`**
+- [x] **Step 14.4: Criar `frontend/index.html`**
 
 ```html
 <!DOCTYPE html>
@@ -1435,7 +1434,7 @@ export default defineConfig({
 </html>
 ```
 
-- [ ] **Step 14.5: Criar `frontend/tailwind.config.js`**
+- [x] **Step 14.5: Criar `frontend/tailwind.config.js`**
 
 ```js
 /** @type {import('tailwindcss').Config} */
@@ -1452,7 +1451,7 @@ export default {
 };
 ```
 
-- [ ] **Step 14.6: Criar `frontend/postcss.config.js`**
+- [x] **Step 14.6: Criar `frontend/postcss.config.js`**
 
 ```js
 export default {
@@ -1460,7 +1459,7 @@ export default {
 };
 ```
 
-- [ ] **Step 14.7: Criar `frontend/src/types/index.ts`**
+- [x] **Step 14.7: Criar `frontend/src/types/index.ts`**
 
 ```typescript
 export type ProblemType = 'hidrossanitario' | 'eletrico' | 'estrutural' | 'acabamento' | 'outro';
@@ -1498,7 +1497,7 @@ export interface Ticket {
 }
 ```
 
-- [ ] **Step 14.8: Criar `frontend/src/api/client.ts`**
+- [x] **Step 14.8: Criar `frontend/src/api/client.ts`**
 
 ```typescript
 const BASE_URL = import.meta.env.VITE_API_URL ?? '/api';
@@ -1563,7 +1562,7 @@ export async function uploadPhoto(sasUrl: string, file: File): Promise<void> {
 }
 ```
 
-- [ ] **Step 14.9: Criar `frontend/src/components/TicketForm.tsx`**
+- [x] **Step 14.9: Criar `frontend/src/components/TicketForm.tsx`**
 
 ```tsx
 import React, { useState } from 'react';
@@ -1692,7 +1691,7 @@ export function TicketForm({ onSuccess }: Props) {
 }
 ```
 
-- [ ] **Step 14.10: Criar `frontend/src/components/TicketStatus.tsx`**
+- [x] **Step 14.10: Criar `frontend/src/components/TicketStatus.tsx`**
 
 ```tsx
 import { Ticket, TicketStatus } from '../types';
@@ -1803,7 +1802,7 @@ export function TicketStatus({ ticket, onRefresh }: Props) {
 }
 ```
 
-- [ ] **Step 14.11: Criar `frontend/src/pages/HomePage.tsx`**
+- [x] **Step 14.11: Criar `frontend/src/pages/HomePage.tsx`**
 
 ```tsx
 import { useState } from 'react';
@@ -1883,7 +1882,7 @@ export function HomePage() {
 }
 ```
 
-- [ ] **Step 14.12: Criar `frontend/src/pages/TicketPage.tsx`**
+- [x] **Step 14.12: Criar `frontend/src/pages/TicketPage.tsx`**
 
 ```tsx
 import { useEffect, useState } from 'react';
@@ -1940,7 +1939,7 @@ export function TicketPage() {
 }
 ```
 
-- [ ] **Step 14.13: Criar `frontend/src/App.tsx`**
+- [x] **Step 14.13: Criar `frontend/src/App.tsx`**
 
 ```tsx
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -1959,7 +1958,7 @@ export function App() {
 }
 ```
 
-- [ ] **Step 14.14: Criar `frontend/src/main.tsx`**
+- [x] **Step 14.14: Criar `frontend/src/main.tsx`**
 
 ```tsx
 import React from 'react';
@@ -1974,7 +1973,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 );
 ```
 
-- [ ] **Step 14.15: Criar `frontend/src/index.css`**
+- [x] **Step 14.15: Criar `frontend/src/index.css`**
 
 ```css
 @tailwind base;
@@ -1982,13 +1981,13 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 @tailwind utilities;
 ```
 
-- [ ] **Step 14.16: Instalar dependências do frontend**
+- [x] **Step 14.16: Instalar dependências do frontend**
 
 ```bash
 cd frontend && npm install
 ```
 
-- [ ] **Step 14.17: Rodar frontend localmente**
+- [x] **Step 14.17: Rodar frontend localmente**
 
 ```bash
 cd frontend && npm run dev
@@ -2014,7 +2013,7 @@ git commit -m "feat: add React frontend for ticket management"
 - Create: `infrastructure/main.tf`
 - Create: `infrastructure/outputs.tf`
 
-- [ ] **Step 15.1: Criar `infrastructure/providers.tf`**
+- [x] **Step 15.1: Criar `infrastructure/providers.tf`**
 
 ```hcl
 terraform {
@@ -2041,24 +2040,20 @@ provider "azurerm" {
 }
 ```
 
-- [ ] **Step 15.2: Criar `infrastructure/backend.tf`**
+- [x] **Step 15.2: Criar `infrastructure/backend.tf`**
 
 ```hcl
-# Para bootstrap inicial, use local backend e depois migre para remote.
-# Descomente o bloco abaixo após criar o storage account de state manualmente
-# via script scripts/bootstrap-tfstate.sh
-
-# terraform {
-#   backend "azurerm" {
-#     resource_group_name  = "rg-quickrepair-tfstate"
-#     storage_account_name = "stqrtfstate"        # substitua pelo nome real
-#     container_name       = "tfstate"
-#     key                  = "quickrepair.tfstate"
-#   }
-# }
+terraform {
+  backend "azurerm" {
+    resource_group_name  = "rg-quickrepair-tfstate"
+    storage_account_name = "stqrtfstateplaceholder"
+    container_name       = "tfstate"
+    key                  = "quickrepair.tfstate"
+  }
+}
 ```
 
-- [ ] **Step 15.3: Criar `infrastructure/variables.tf`**
+- [x] **Step 15.3: Criar `infrastructure/variables.tf`**
 
 ```hcl
 variable "project_name" {
@@ -2086,7 +2081,7 @@ variable "email_sender_display" {
 }
 ```
 
-- [ ] **Step 15.4: Criar `infrastructure/main.tf`**
+- [x] **Step 15.4: Criar `infrastructure/main.tf`**
 
 ```hcl
 locals {
@@ -2239,7 +2234,7 @@ resource "azurerm_static_web_app" "frontend" {
 }
 ```
 
-- [ ] **Step 15.5: Criar `infrastructure/outputs.tf`**
+- [x] **Step 15.5: Criar `infrastructure/outputs.tf`**
 
 ```hcl
 output "resource_group_name" {
@@ -2296,7 +2291,7 @@ git commit -m "feat: add Terraform infrastructure for Azure MVP"
 **Files:**
 - Create: `scripts/bootstrap-tfstate.sh`
 
-- [ ] **Step 16.1: Criar `scripts/bootstrap-tfstate.sh`**
+- [x] **Step 16.1: Criar `scripts/bootstrap-tfstate.sh`**
 
 ```bash
 #!/usr/bin/env bash
@@ -2349,307 +2344,31 @@ git commit -m "chore: add Terraform state bootstrap script"
 ## Task 17: GitHub Actions Workflows
 
 **Files:**
-- Create: `.github/workflows/terraform-plan.yml`
-- Create: `.github/workflows/terraform-apply.yml`
-- Create: `.github/workflows/terraform-destroy.yml`
-- Create: `.github/workflows/deploy-backend.yml`
-- Create: `.github/workflows/deploy-frontend.yml`
+- Create: `.github/workflows/deploy.yml`
+- Create: `.github/workflows/destroy.yml`
+- Delete: workflows separados de plan, apply, destroy, deploy-backend e deploy-frontend
 
 **GitHub Secrets necessários:**
 ```
-ARM_CLIENT_ID         → Service Principal App ID
-ARM_CLIENT_SECRET     → Service Principal Secret
-ARM_SUBSCRIPTION_ID   → Azure Subscription ID
-ARM_TENANT_ID         → Azure Tenant ID
-TF_VAR_SENDGRID_API_KEY → SendGrid API Key
-AZURE_STATIC_WEB_APPS_API_TOKEN → Token da Static Web App (output do Terraform)
+ARM_CLIENT_ID         -> Service Principal App ID
+ARM_CLIENT_SECRET     -> Service Principal Secret
+ARM_SUBSCRIPTION_ID   -> Azure Subscription ID
+ARM_TENANT_ID         -> Azure Tenant ID
 ```
 
-- [ ] **Step 17.1: Criar `.github/workflows/terraform-plan.yml`**
+- [x] **Step 17.1: Criar `.github/workflows/deploy.yml`**
 
-```yaml
-name: Terraform Plan
+Workflow manual `Deploy Azure` com input `confirm=deploy`. Ele cria o storage remoto do Terraform state, executa `terraform apply`, publica Azure Functions, obtem a Function Key, compila o frontend com `VITE_API_URL` e `VITE_FUNCTION_KEY`, e publica a Static Web App usando o token vindo de `terraform output`.
 
-on:
-  pull_request:
-    paths:
-      - 'infrastructure/**'
-      - '.github/workflows/terraform-*.yml'
+- [x] **Step 17.2: Criar `.github/workflows/destroy.yml`**
 
-permissions:
-  contents: read
-  pull-requests: write
+Workflow manual `Destroy Azure` com input `confirm=destroy`. Ele usa o mesmo state remoto, executa `terraform destroy` e remove o resource group `rg-quickrepair-tfstate` ao final para evitar custo residual.
 
-env:
-  TF_WORKING_DIR: ./infrastructure
-
-jobs:
-  plan:
-    name: Terraform Plan
-    runs-on: ubuntu-latest
-    environment: dev
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: "1.7.5"
-
-      - name: Terraform Init
-        working-directory: ${{ env.TF_WORKING_DIR }}
-        env:
-          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-        run: terraform init
-
-      - name: Terraform Validate
-        working-directory: ${{ env.TF_WORKING_DIR }}
-        run: terraform validate
-
-      - name: Terraform Plan
-        id: plan
-        working-directory: ${{ env.TF_WORKING_DIR }}
-        env:
-          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-          # ACS é provisionado automaticamente pelo Terraform — sem API key externa
-        run: |
-          terraform plan -no-color -out=tfplan 2>&1 | tee plan.txt
-          echo "PLAN_OUTPUT<<EOF" >> $GITHUB_OUTPUT
-          tail -50 plan.txt >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-        continue-on-error: true
-
-      - name: Comment Plan on PR
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const output = `#### Terraform Plan 📋
-            \`\`\`
-            ${{ steps.plan.outputs.PLAN_OUTPUT }}
-            \`\`\`
-            *Triggered by @${{ github.actor }}*`;
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: output
-            });
-```
-
-- [ ] **Step 17.2: Criar `.github/workflows/terraform-apply.yml`**
-
-```yaml
-name: Terraform Apply
-
-on:
-  workflow_dispatch:
-    inputs:
-      confirm:
-        description: 'Digite "apply" para confirmar'
-        required: true
-        type: string
-
-env:
-  TF_WORKING_DIR: ./infrastructure
-
-jobs:
-  apply:
-    name: Terraform Apply
-    runs-on: ubuntu-latest
-    environment: dev
-    if: github.event.inputs.confirm == 'apply'
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: "1.7.5"
-
-      - name: Terraform Init
-        working-directory: ${{ env.TF_WORKING_DIR }}
-        env:
-          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-        run: terraform init
-
-      - name: Terraform Apply
-        working-directory: ${{ env.TF_WORKING_DIR }}
-        env:
-          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-          # ACS é provisionado automaticamente pelo Terraform — sem API key externa
-        run: terraform apply -auto-approve
-
-      - name: Show Outputs
-        working-directory: ${{ env.TF_WORKING_DIR }}
-        env:
-          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-        run: terraform output
-```
-
-- [ ] **Step 17.3: Criar `.github/workflows/terraform-destroy.yml`**
-
-```yaml
-name: Terraform Destroy
-
-on:
-  workflow_dispatch:
-    inputs:
-      confirm:
-        description: 'Digite "destroy" para confirmar a destruição'
-        required: true
-        type: string
-
-env:
-  TF_WORKING_DIR: ./infrastructure
-
-jobs:
-  destroy:
-    name: Terraform Destroy
-    runs-on: ubuntu-latest
-    environment: dev
-    if: github.event.inputs.confirm == 'destroy'
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: "1.7.5"
-
-      - name: Terraform Init
-        working-directory: ${{ env.TF_WORKING_DIR }}
-        env:
-          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-        run: terraform init
-
-      - name: Terraform Destroy
-        working-directory: ${{ env.TF_WORKING_DIR }}
-        env:
-          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-          # ACS é provisionado automaticamente pelo Terraform — sem API key externa
-        run: terraform destroy -auto-approve
-```
-
-- [ ] **Step 17.4: Criar `.github/workflows/deploy-backend.yml`**
-
-```yaml
-name: Deploy Backend
-
-on:
-  push:
-    branches: [main]
-    paths:
-      - 'backend/**'
-      - '.github/workflows/deploy-backend.yml'
-  workflow_dispatch:
-
-jobs:
-  deploy:
-    name: Build & Deploy Azure Functions
-    runs-on: ubuntu-latest
-    environment: dev
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: backend/package-lock.json
-
-      - name: Install & Build
-        working-directory: backend
-        run: npm ci && npm run build
-
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          creds: |
-            {
-              "clientId": "${{ secrets.ARM_CLIENT_ID }}",
-              "clientSecret": "${{ secrets.ARM_CLIENT_SECRET }}",
-              "subscriptionId": "${{ secrets.ARM_SUBSCRIPTION_ID }}",
-              "tenantId": "${{ secrets.ARM_TENANT_ID }}"
-            }
-
-      - name: Deploy to Azure Functions
-        uses: Azure/functions-action@v1
-        with:
-          app-name: ${{ secrets.FUNCTION_APP_NAME }}
-          package: backend
-          respect-funcignore: true
-```
-
-- [ ] **Step 17.5: Criar `.github/workflows/deploy-frontend.yml`**
-
-```yaml
-name: Deploy Frontend
-
-on:
-  push:
-    branches: [main]
-    paths:
-      - 'frontend/**'
-      - '.github/workflows/deploy-frontend.yml'
-  workflow_dispatch:
-
-jobs:
-  deploy:
-    name: Build & Deploy Static Web App
-    runs-on: ubuntu-latest
-    environment: dev
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
-
-      - name: Install & Build
-        working-directory: frontend
-        env:
-          VITE_API_URL: ${{ secrets.FUNCTION_APP_URL }}/api
-        run: npm ci && npm run build
-
-      - name: Deploy to Static Web App
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
-          action: upload
-          app_location: frontend
-          output_location: dist
-```
-
-- [ ] **Step 17.6: Commit**
+- [ ] **Step 17.3: Commit**
 
 ```bash
-git add .github/
-git commit -m "feat: add GitHub Actions workflows for Terraform and deployments"
+git add .github/ infrastructure/backend.tf README.md docs/superpowers/plans/2026-05-05-bspar-quick-repair-mvp.md
+git commit -m "feat: add manual Azure deploy and destroy workflows"
 ```
 
 ---
@@ -2659,7 +2378,7 @@ git commit -m "feat: add GitHub Actions workflows for Terraform and deployments"
 **Files:**
 - Create: `README.md`
 
-- [ ] **Step 18.1: Criar `README.md`**
+- [x] **Step 18.1: Criar `README.md`**
 
 ```markdown
 # BSPAR Quick Repair
@@ -2718,40 +2437,21 @@ npm run dev
 
 App disponível em `http://localhost:5173`
 
-## Deploy
+## Deploy Manual via GitHub Actions
 
-### Primeira vez
+Os workflows usam apenas os repository secrets `ARM_CLIENT_ID`, `ARM_CLIENT_SECRET`, `ARM_SUBSCRIPTION_ID` e `ARM_TENANT_ID`.
 
-1. Criar service principal:
-```bash
-az ad sp create-for-rbac --name "sp-quickrepair-ci" \
-  --role Contributor \
-  --scopes /subscriptions/<SUBSCRIPTION_ID> \
-  --sdk-auth
-```
+### Subir ambiente
 
-2. Bootstrap do Terraform state:
-```bash
-./scripts/bootstrap-tfstate.sh brazilsouth
-```
+GitHub Actions -> `Deploy Azure` -> `Run workflow` -> preencher `confirm` com `deploy`.
 
-3. Descomentar o bloco `backend "azurerm"` em `infrastructure/backend.tf`
+O workflow cria o Terraform state remoto automaticamente, executa `terraform apply`, publica backend e frontend, e injeta a Function Key no build da SPA.
 
-4. Configurar GitHub Secrets:
-   - `ARM_CLIENT_ID`
-   - `ARM_CLIENT_SECRET`
-   - `ARM_SUBSCRIPTION_ID`
-   - `ARM_TENANT_ID`
-   - `TF_VAR_SENDGRID_API_KEY`
-   - `FUNCTION_APP_NAME` (após o apply)
-   - `FUNCTION_APP_URL` (após o apply)
-   - `AZURE_STATIC_WEB_APPS_API_TOKEN` (após o apply)
+### Derrubar ambiente para evitar custo
 
-5. GitHub Actions → Terraform Apply → digitar "apply"
+GitHub Actions -> `Destroy Azure` -> `Run workflow` -> preencher `confirm` com `destroy`.
 
-### Destruir após demo
-
-GitHub Actions → Terraform Destroy → digitar "destroy"
+O workflow executa `terraform destroy` e remove tambem o resource group do Terraform state para evitar custo residual.
 
 ## Contratos de Teste
 
