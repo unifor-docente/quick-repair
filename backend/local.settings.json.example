@@ -1,0 +1,14 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "STORAGE_CONNECTION_STRING": "UseDevelopmentStorage=true",
+    "STORAGE_ACCOUNT_NAME": "devstoreaccount1",
+    "STORAGE_ACCOUNT_KEY": "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==",
+    "BLOB_CONTAINER_PHOTOS": "ticket-photos",
+    "ACS_CONNECTION_STRING": "endpoint=https://acs-dev.communication.azure.com/;accesskey=...",
+    "ACS_EMAIL_SENDER": "DoNotReply@<acs-domain>.azurecomm.net",
+    "APPINSIGHTS_INSTRUMENTATIONKEY": ""
+  }
+}
