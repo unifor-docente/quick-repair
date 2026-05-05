@@ -132,8 +132,13 @@ jobs:
           function_app_url="$(terraform output -raw function_app_default_hostname)"
           static_web_app_url="$(terraform output -raw static_web_app_url)"
           static_web_app_token="$(terraform output -raw static_web_app_deployment_token)"
+          storage_account_name="$(terraform output -raw storage_account_name)"
+          storage_account_key="$(terraform output -raw storage_account_key)"
+          storage_connection_string="$(terraform output -raw storage_connection_string)"
 
           echo "::add-mask::$static_web_app_token"
+          echo "::add-mask::$storage_account_key"
+          echo "::add-mask::$storage_connection_string"
 
           {
             echo "resource_group_name=$resource_group_name"
@@ -141,8 +146,21 @@ jobs:
             echo "function_app_url=$function_app_url"
             echo "static_web_app_url=$static_web_app_url"
             echo "static_web_app_token=$static_web_app_token"
+            echo "storage_account_name=$storage_account_name"
+            echo "storage_account_key=$storage_account_key"
+            echo "storage_connection_string=$storage_connection_string"
           } >> "$GITHUB_OUTPUT"
-
+      
+      - name: Seed database
+        working-directory: backend
+        env:
+          STORAGE_CONNECTION_STRING: ${{ steps.tf_outputs.outputs.storage_connection_string }}
+          STORAGE_ACCOUNT_NAME: ${{ steps.tf_outputs.outputs.storage_account_name }}
+          STORAGE_ACCOUNT_KEY: ${{ steps.tf_outputs.outputs.storage_account_key }}
+        run: |
+          npm ci
+          npm run seed    
+          
       - name: Install and build backend
         working-directory: backend
         run: npm ci && npm run build
