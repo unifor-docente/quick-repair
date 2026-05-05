@@ -2,7 +2,7 @@ import { app, HttpRequest, HttpResponseInit, InvocationContext } from '@azure/fu
 import { v4 as uuidv4 } from 'uuid';
 import { CreateTicketRequest, CreateTicketResponse, Ticket } from '../types/index.js';
 import { createTicketEntity, getAvailableTechnician, getContract } from '../services/tableStorage.js';
-import { sendOutOfWarrantyEmail, sendWarrantyConfirmationEmail } from '../services/emailService.js';
+import { sendOutOfWarrantyEmail, sendWarrantyConfirmationEmail, sendTechnicianAssignmentEmail } from '../services/emailService.js';
 
 function isWithinWarranty(purchaseDate: string, warrantyYears: number): boolean {
   const purchase = new Date(purchaseDate);
@@ -96,16 +96,31 @@ export async function createTicketHandler(
     await createTicketEntity(ticket);
 
     if (technician) {
-      await sendWarrantyConfirmationEmail({
-        to: contract.clientEmail,
-        clientName: contract.clientName,
-        ticketId,
-        contractId: normalizedContractId,
-        propertyName: contract.propertyName,
-        technicianName: technician.name,
-        technicianEmail: technician.email,
-        problemType,
-      });
+      await Promise.all([
+        sendWarrantyConfirmationEmail({
+          to: contract.clientEmail,
+          clientName: contract.clientName,
+          ticketId,
+          contractId: normalizedContractId,
+          propertyName: contract.propertyName,
+          technicianName: technician.name,
+          technicianEmail: technician.email,
+          problemType,
+        }),
+
+        sendTechnicianAssignmentEmail({
+          to: technician.email,
+          technicianName: technician.name,
+          ticketId,
+          contractId: normalizedContractId,
+          clientName: contract.clientName,
+          clientEmail: contract.clientEmail,
+          propertyName: contract.propertyName,
+          propertyType: contract.propertyType,
+          problemType,
+          description,
+        }),
+      ]);
     }
 
     const response: CreateTicketResponse = {

@@ -95,3 +95,36 @@ export async function sendAutoCloseEmail(params: {
      <br><p>BSPAR Corporações</p>`
   );
 }
+
+export async function sendTechnicianAssignmentEmail(params: {
+  to: string;
+  technicianName: string;
+  ticketId: string;
+  contractId: string;
+  clientName: string;
+  clientEmail: string;
+  propertyName: string;
+  propertyType: string;
+  problemType: string;
+  description: string;
+}): Promise<void> {
+  await send(
+    params.to,
+    `[BSPAR] Novo chamado atribuído ${params.ticketId}`,
+    `<h2>Olá, ${params.technicianName}!</h2>
+     <p>Um novo chamado foi atribuído para atendimento técnico.</p>
+     <table>
+       <tr><td><strong>Chamado:</strong></td><td>${params.ticketId}</td></tr>
+       <tr><td><strong>Contrato:</strong></td><td>${params.contractId}</td></tr>
+       <tr><td><strong>Cliente:</strong></td><td>${params.clientName}</td></tr>
+       <tr><td><strong>E-mail do cliente:</strong></td><td>${params.clientEmail}</td></tr>
+       <tr><td><strong>Imóvel:</strong></td><td>${params.propertyName}</td></tr>
+       <tr><td><strong>Tipo:</strong></td><td>${params.propertyType}</td></tr>
+       <tr><td><strong>Problema:</strong></td><td>${params.problemType}</td></tr>
+     </table>
+     <p><strong>Descrição:</strong></p>
+     <p>${params.description}</p>
+     <p>Entre em contato com o cliente para combinar a visita técnica.</p>
+     <br><p>BSPAR Corporações</p>`
+  );
+}
