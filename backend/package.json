@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "start": "func start --typescript",
+    "start": "npm run build && func start",
     "seed": "ts-node seed/seed.ts",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch"

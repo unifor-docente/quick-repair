@@ -7,7 +7,7 @@
     "STORAGE_ACCOUNT_NAME": "devstoreaccount1",
     "STORAGE_ACCOUNT_KEY": "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==",
     "BLOB_CONTAINER_PHOTOS": "ticket-photos",
-    "ACS_CONNECTION_STRING": "endpoint=https://acs-dev.communication.azure.com/;accesskey=...",
+    "ACS_CONNECTION_STRING": "endpoint=https://<your-acs-resource>.communication.azure.com/;accesskey=<your-acs-access-key>",
     "ACS_EMAIL_SENDER": "DoNotReply@<acs-domain>.azurecomm.net",
     "APPINSIGHTS_INSTRUMENTATIONKEY": ""
   }
